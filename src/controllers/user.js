@@ -22,13 +22,16 @@ const addTodo = (req, res) => {
         return;
     }
 
-    UserModel.findOneAndUpdate({_id: userId}, {$push: {todos: doc}})
+    UserModel.findOneAndUpdate({_id: userId}, {$push: {todos: doc}}, { runValidators: true, new: true })
         .then((response) => {
             res.status(200).send({message: "Todo added successfully", id: response._id});
         })
         .catch((err) => {
-            console.log(err);
-            res.status(500).send({message: "Error occured."})
+            if (err.name === 'ValidationError') {
+                res.status(500).send({message: "Missig fields.", error: err.message})
+                return;
+            }
+            res.status(500).send({message: "Error occured.", error: err.message})
         })
 }
 

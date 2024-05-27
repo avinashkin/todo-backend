@@ -15,8 +15,8 @@ const userSchema = new Schema(
   {
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    date_created: { type: Date, default: Date.now() },
-    todos: {type: [todoSchema]}
+    date_created: { type: Date, default: Date.now },
+    todos: {type: [todoSchema], default: []}
   },
   { collection: "users" }
 );
