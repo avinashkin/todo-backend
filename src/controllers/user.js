@@ -82,11 +82,9 @@ const deleteTodo = (req, res) => {
 
   UserModel.updateOne({ _id: userId }, { $pull: { todos: { id: id } } })
     .then((response) => {
-      console.log(response);
       res.status(200).send({ message: "Todo deleted." });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).send({ message: "Error occured" });
     });
 };
