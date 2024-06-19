@@ -38,7 +38,8 @@ const login = async (req, res) => {
         const access_token = jwt.sign({
           userId: id
         }, process.env.SECRET_KEY);
-    
+
+        user[0].password = undefined;
         return res.status(200).send({success: true, userDetails: user[0], access_token})
       } else {
         return res.status(404).json({message: "Username or password incorrect."});
