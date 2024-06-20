@@ -23,5 +23,8 @@ router.delete("/delete/:id", auth, (req, res) => {
     user.deleteTodo(req, res);
 })
 
+router.put("/update", auth, (req, res) => {
+    user.updateTodo(req, res);
+})
 
 module.exports = router;

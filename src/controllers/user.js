@@ -49,7 +49,7 @@ const login = async (req, res) => {
 const addTodo = (req, res) => {
   const doc = req.body;
   const userId = req.user.userId;
-
+  
   if (!userId) {
     res.status(500).send({ message: "user Id is missing" });
     return;
@@ -90,11 +90,48 @@ const deleteTodo = (req, res) => {
     });
 };
 
+const updateTodo = (req, res) => {
+  const doc = req.body;
+  const userId = req.user.userId;
+  const {feild, data, todoId} = doc;
+  if (!feild) {
+    res.status(500).send({message: "Update field miisng"})
+  }
+  if (!userId) {
+    res.status(500).send({ message: "user Id is missing" });
+    return;
+  }
+  console.log('this', doc);
+  UserModel.findOne({_id: userId})
+    .then((response) => {
+      response.todos.forEach((todo) => {
+        if (todo.id === todoId) {
+          todo[feild] = data;
+        }
+      })
+      response.save().then(() => {
+        res.status(200).send({message: 'Todo updated!'});
+      })
+      .catch(err => {
+        res.status(500).send({message: 'Error Occured while update.'});
+      }) 
+    })
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        res.status(500).send({ message: "Missig fields.", error: err.message });
+        return;
+      }
+      console.log(err);
+      res.status(500).send({message: 'Error occured'})
+    })
+}
+
 
 
 module.exports = {
   createUser,
   addTodo,
   deleteTodo,
-  login
+  login,
+  updateTodo
 };
