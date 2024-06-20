@@ -101,7 +101,6 @@ const updateTodo = (req, res) => {
     res.status(500).send({ message: "user Id is missing" });
     return;
   }
-  console.log('this', doc);
   UserModel.findOne({_id: userId})
     .then((response) => {
       response.todos.forEach((todo) => {
@@ -121,7 +120,6 @@ const updateTodo = (req, res) => {
         res.status(500).send({ message: "Missig fields.", error: err.message });
         return;
       }
-      console.log(err);
       res.status(500).send({message: 'Error occured'})
     })
 }
